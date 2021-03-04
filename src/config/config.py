@@ -1,6 +1,5 @@
 import sys
 import logging
-import numpy as np
 
 # Logger Configuration -----------------------------------------------------------------------------------------------
 
@@ -12,6 +11,10 @@ consoleHandle.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 consoleHandle.setFormatter(formatter)
 logger.addHandler(consoleHandle)
+
+# AWS ----------------------------------------------------------------------------------------------------------------
+
+AWS_REGION = 'us-east-1'
 
 # Project ------------------------------------------------------------------------------------------------------------
 

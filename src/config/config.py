@@ -17,6 +17,9 @@ logger.addHandler(consoleHandle)
 
 target = 'median_house_value'
 
+features = ['longitude', 'latitude', 'housing_median_age', 'total_rooms',
+            'total_bedrooms', 'population', 'households', 'median_income', 'ocean_proximity']
+
 numerical_features = ['housing_median_age', 'total_rooms',
                       'total_bedrooms', 'population', 'households', 'median_income']
 

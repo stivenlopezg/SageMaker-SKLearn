@@ -10,6 +10,7 @@ class AwsHelper:
     """
     Helper con los metodos mas usados de boto3
     """
+
     def __init__(self):
         self.s3_client = boto3.client('s3', region_name=cfg.AWS_REGION)
 

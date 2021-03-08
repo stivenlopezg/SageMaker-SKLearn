@@ -23,7 +23,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     # Load data
     input_files = [os.path.join(args.train, file) for file in os.listdir(args.train)]
-    data = pd.concat(objs=[pd.read_csv(file) for file in input_files])
+    data = pd.concat(objs=[pd.read_csv(file, names=features + [target]) for file in input_files])
     label = data.pop(target)
     # Transformers
     numeric_preprocessing = Pipeline(steps=[('numeric_selector', ColumnsSelector(columns=numerical_features)),

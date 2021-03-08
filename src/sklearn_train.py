@@ -20,10 +20,11 @@ if __name__ == '__main__':
     parser.add_argument('--output-data-dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
     parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'])
     parser.add_argument('--train', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
+
     args = parser.parse_args()
     # Load data
     input_files = [os.path.join(args.train, file) for file in os.listdir(args.train)]
-    data = pd.concat(objs=[pd.read_csv(file) for file in input_files])
+    data = pd.concat(objs=[pd.read_csv(file, names=features + [target]) for file in input_files])
     label = data.pop(target)
     # Transformers
     numeric_preprocessing = Pipeline(steps=[('numeric_selector', ColumnsSelector(columns=numerical_features)),
@@ -43,7 +44,7 @@ if __name__ == '__main__':
                             ('gradient_boosting', GradientBoostingRegressor(loss='huber', learning_rate=0.08,
                                                                             n_estimators=5, subsample=0.7))])
 
-    model.fit(data, target)
+    model.fit(data, label)
     joblib.dump(model, filename=os.path.join(args.model_dir, 'model.joblib'))
     print('The model has been saved!')
 
@@ -73,11 +74,8 @@ def input_fn(input_data, content_type):
 
 
 def predict_fn(input_data, model):
-    features = model.transform(input_data)
-    if target in input_data:
-        return np.insert(features, 0, input_data[target], axis=1)
-    else:
-        return features
+    prediction = model.predict(input_data)
+    return prediction
 
 
 def output_fn(prediction, accept):
